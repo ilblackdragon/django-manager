@@ -4,15 +4,29 @@ import os
 from os.path import dirname, basename, join, isdir, isfile
 import sys
 import shutil
+import subprocess
 import string
 from random import choice
  
 
 PROJECT_TEMPLATE_PATH = join(dirname(__file__), 'project_name')
+ENV_DIR = 'env'
+ENV_PROJECT_DIR = 'project'
 
 def secret_key():
     return ''.join([choice(string.letters + string.digits + string.punctuation) for i in range(50)])
 
+def setup_virtual_env(path_to):
+    os.mkdir(path_to)
+    subprocess.call(['virtualenv', join(path_to, ENV_DIR)])
+
+def setup_git(path_to):
+    cur_dir = os.getcwd()
+    os.chdir(path_to)
+    subprocess.call(['git', 'init', '.'])
+    subprocess.call(['git', 'add', '-A'])
+    subprocess.call(['git', 'commit', '-m', '"Initial commit"'])
+    os.chdir(cur_dir)
 
 def copy_tree(path_from, path_to, args):
 
@@ -45,9 +59,9 @@ def copy_tree(path_from, path_to, args):
         elif isfile(fpath):
             copy_file(fpath, fpath_to)
         else:
-            print("Can't copy `%s` - not yet implemented." % fpath)
+            print("Can't copy `%s` - not yet implemented for this file type." % fpath)
 
-def create_project(project_name, project_path):
+def create_project(project_name, project_path, enable_env=True, enable_git=True):
     project_to = join(project_path, project_name)
     if os.path.exists(project_to):
         print("`%s` already exists. Please choose another project name or path" % project_to)
@@ -59,14 +73,20 @@ def create_project(project_name, project_path):
     else:
         print("`%s` confilcts with the name of an existing Python module and cannot be used as project name. Please choose another project name" % project_name)
         return
-    try:    
-        copy_tree(PROJECT_TEMPLATE_PATH, join(project_to), {
+    try:
+        if enable_env:
+            setup_virtual_env(project_to)
+            project_to = join(project_to, ENV_PROJECT_DIR)
+        copy_tree(PROJECT_TEMPLATE_PATH, project_to, {
             'project_name': project_name,
             'Project_name': project_name.capitalize(),
             'secret_key': secret_key(),
         })
+        if enable_git:
+            setup_git(project_to)
     except Exception as e:
-        shutil.rmtree(project_to)
+        if os.path.exists(project_to):
+            shutil.rmtree(project_to)
         raise e
 
 if __name__ == "__main__":

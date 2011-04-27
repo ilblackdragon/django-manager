@@ -27,13 +27,15 @@ Future development
   Possible arguments:
 
     + --no-git - disable git stuff
-        + --no-env - disable virtual env
-        + --no-langs - disable multilingual part
+    + --no-env - disable virtual env
+    + --no-langs - disable multilingual part
+
 - Make it automaticly git repository
 
 - Add virtualenv surround by default:
 
     + project_name/
+
         + env/
         + project/
 
