@@ -17,7 +17,7 @@ UPDATE_SCRIPT = './develop/update.sh'
 GITIGNORE_PATH = join(dirname(abspath(__file__)), 'template_gitignore')
 
 def secret_key():
-    return ''.join([choice(string.letters + string.digits + string.punctuation) for i in range(50)])
+    return ''.join([choice(string.letters + string.digits + string.punctuation.replace('\'', '')) for i in range(50)])
 
 def setup_virtual_env(path_to):
     os.mkdir(path_to)
@@ -42,10 +42,10 @@ def apps_install(path_to):
 
 def copy_tree(path_from, path_to, args):
 
-    def handle_string(string, args, brackets=False):
+    def handle_string(s, args, brackets=False):
         for arg in args:
-            string = string.replace("{{ " + arg + " }}" if brackets else arg, args[arg])
-        return string
+            s = s.replace("{{ " + arg + " }}" if brackets else arg, args[arg])
+        return s
 
     def copy_file(filename_from, filename_to):
         content = open(filename_from, 'r').read()
