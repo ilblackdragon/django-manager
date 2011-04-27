@@ -1,7 +1,7 @@
-django-template
+Django-template
 ###############
 
-*Django-template* is python application for creating django project (instead django-admin startproject) using some specific convertions, that we use in our development process
+*Django-template* is python application for creating django project (instead django-admin startproject) using some specific convertions, that we use in our development process.
 
 .. contents::
 
@@ -31,15 +31,20 @@ Possible arguments:
 - Make it automaticly git repository
 
 - Add virtualenv surround by default :
-project_name/
-    env/
-    project/
-        project files here
-- Make initial commit after creation (with empty dirs included (how? empty_files))
+
+    project_name/
+        env/
+        project/
+            project files here
+            
+- Make initial commit after creation (with empty dirs included (how? empty_files?))
 
 - Super task is to update project from template, for exmaple:
     
     ./update_project my_proj - updates existing project and adds new apps\reqs\folders and stuff, without overwriting user's code
 
 - Add full support of multilingual - from apps to folders with compiled translations for default apps
-
+    * Multilingual flatpages
+    * Database translation
+    * Making and compiling translations
+ 
