@@ -1,18 +1,1 @@
-
-Future development:
-
-1. Arguments for additional configuration, for example:
-./create_project my_proj --no-git
-Possible arguments:
-    * --no-git
-    * --no-env
-2. Make it automaticly git repository
-3. Add virtualenv surround by default :
-project_name/
-    env/
-    project/
-        project files here
-4. Make initial commit after creation (with empty dirs included (how? empty_files))
-5. Super task is to update project from template
-./update_project my_proj - updates existing project and adds new apps\reqs\folders and stuff, without overwriting user's code
-
+README.rst
