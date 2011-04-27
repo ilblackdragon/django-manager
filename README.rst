@@ -43,6 +43,8 @@ Future development
     
     ./update_project my_proj - updates existing project and adds new apps\reqs\folders and stuff, without overwriting user's code
 
+  Nice idea, is to have diff patches from all template revisions to current. So when update_project is calling, it figure out project's revision and then apply patches.
+
 - Add full support of multilingual - from apps to folders with compiled translations for default apps
     - Multilingual flatpages
     - Database translation

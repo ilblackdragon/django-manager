@@ -106,9 +106,8 @@ if __name__ == "__main__":
         print("Usage: create_project.py project_name [project_path]")
         exit()
     if len(sys.argv) == 3:
-        project_path = sys.argv[3]
+        project_path = abspath(sys.argv[2])
     else:
         project_path = os.getcwd()
-#    create_project(sys.argv[1], project_path)
-    create_project(sys.argv[1], project_path, enable_env=False, enable_git=False, enable_apps_install=False)
+    create_project(sys.argv[1], project_path)
 
