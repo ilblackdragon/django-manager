@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 
 import os
-from os.path import dirname, basename, join, isdir, isfile
+from os.path import dirname, abspath, join, isdir, isfile
 import sys
 import shutil
 import subprocess
 import string
 from random import choice
- 
 
-PROJECT_TEMPLATE_PATH = join(dirname(__file__), 'project_name')
+from __init__ import TEMPLATE_REVISION
+
+PROJECT_TEMPLATE_PATH = join(dirname(abspath(__file__)), 'project_name')
 ENV_DIR = 'env'
 ENV_PROJECT_DIR = 'project'
+UPDATE_SCRIPT = './develop/update.sh'
+GITIGNORE_PATH = join(dirname(abspath(__file__)), 'template_gitignore')
 
 def secret_key():
     return ''.join([choice(string.letters + string.digits + string.punctuation) for i in range(50)])
@@ -26,12 +29,15 @@ def setup_git(path_to):
     subprocess.call(['git', 'init', '.'])
     subprocess.call(['git', 'add', '-A'])
     subprocess.call(['git', 'commit', '-m', '"Initial commit"'])
+    shutil.copy(GITIGNORE_PATH, join(path_to, '.gitignore'))
+    subprocess.call(['git', 'add', '-A'])
+    subprocess.call(['git', 'commit', '-m', '"Add git ignore"'])
     os.chdir(cur_dir)
 
 def apps_install(path_to):
     cur_dir = os.getcwd()
     os.chdir(path_to)
-    subprocess.call(['./develop/update.sh'])
+    subprocess.call([UPDATE_SCRIPT])
     os.chdir(cur_dir)
 
 def copy_tree(path_from, path_to, args):
@@ -49,17 +55,10 @@ def copy_tree(path_from, path_to, args):
         attr = os.stat(filename_from)
         os.chmod(filename_to, attr.st_mode)
 
-    def get_paths(filename, path_from, path_to):
-        if filename == "empty_file":
-            return (None, None)
-        elif filename == "gitignore":
-            return (join(path_from, filename), join(path_to, '.' + filename))
-        return (join(path_from, filename), join(path_to, filename))
-
     os.mkdir(path_to)
     files = os.listdir(path_from)
     for filename in files:
-        fpath, fpath_to = get_paths(filename, path_from, path_to)
+        fpath, fpath_to = join(path_from, filename), join(path_to, filename)
         if not fpath or not fpath_to:
             continue
         if isdir(fpath):
@@ -69,7 +68,7 @@ def copy_tree(path_from, path_to, args):
         else:
             print("Can't copy `%s` - not yet implemented for this file type." % fpath)
 
-def create_project(project_name, project_path, enable_env=True, enable_git=True, enable_apps_install=True):
+def create_project(project_name, project_path, enable_env=True, enable_git=True, enable_apps_install=True, arguments=" "):
     project_to = join(project_path, project_name)
     if os.path.exists(project_to):
         print("`%s` already exists. Please choose another project name or path" % project_to)
@@ -89,6 +88,8 @@ def create_project(project_name, project_path, enable_env=True, enable_git=True,
             'project_name': project_name,
             'Project_name': project_name.capitalize(),
             'secret_key': secret_key(),
+            'revision': TEMPLATE_REVISION,
+            'arguments': arguments,
         })
         if enable_git:
             setup_git(project_to)
@@ -97,7 +98,7 @@ def create_project(project_name, project_path, enable_env=True, enable_git=True,
     except Exception as e:
         if os.path.exists(project_to):
             shutil.rmtree(project_to)
-        raise e
+        raise e, None, sys.exc_info()[2]
 
 if __name__ == "__main__":
     # TODO: Add arg parse for additional configuration
@@ -108,5 +109,6 @@ if __name__ == "__main__":
         project_path = sys.argv[3]
     else:
         project_path = os.getcwd()
-    create_project(sys.argv[1], project_path)
+#    create_project(sys.argv[1], project_path)
+    create_project(sys.argv[1], project_path, enable_env=False, enable_git=False, enable_apps_install=False)
 
