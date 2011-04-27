@@ -24,14 +24,13 @@ Future development
     
     ./create_project my_proj --no-git
 
-Possible arguments:
-    - --no-git - disable git stuff
-    - --no-env - disable virtual env
-    - --no-langs - disable multilingual part
+    - Possible arguments:
+        - --no-git - disable git stuff
+        - --no-env - disable virtual env
+        - --no-langs - disable multilingual part
 - Make it automaticly git repository
 
-- Add virtualenv surround by default :
-
+- Add virtualenv surround by default:
     - project_name/
         - env/
         - project/
