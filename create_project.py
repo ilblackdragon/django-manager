@@ -28,6 +28,12 @@ def setup_git(path_to):
     subprocess.call(['git', 'commit', '-m', '"Initial commit"'])
     os.chdir(cur_dir)
 
+def apps_install(path_to):
+    cur_dir = os.getcwd()
+    os.chdir(path_to)
+    subprocess.call(['./develop/update.sh'])
+    os.chdir(cur_dir)
+
 def copy_tree(path_from, path_to, args):
 
     def handle_string(string, args, brackets=False):
@@ -40,6 +46,8 @@ def copy_tree(path_from, path_to, args):
         fout = open(filename_to, 'wb')
         fout.write(handle_string(content, args, True))
         fout.close()
+        attr = os.stat(filename_from)
+        os.chmod(filename_to, attr.st_mode)
 
     def get_paths(filename, path_from, path_to):
         if filename == "empty_file":
@@ -61,7 +69,7 @@ def copy_tree(path_from, path_to, args):
         else:
             print("Can't copy `%s` - not yet implemented for this file type." % fpath)
 
-def create_project(project_name, project_path, enable_env=True, enable_git=True):
+def create_project(project_name, project_path, enable_env=True, enable_git=True, enable_apps_install=True):
     project_to = join(project_path, project_name)
     if os.path.exists(project_to):
         print("`%s` already exists. Please choose another project name or path" % project_to)
@@ -84,6 +92,8 @@ def create_project(project_name, project_path, enable_env=True, enable_git=True)
         })
         if enable_git:
             setup_git(project_to)
+        if enable_apps_install:
+            apps_install(project_to)
     except Exception as e:
         if os.path.exists(project_to):
             shutil.rmtree(project_to)
