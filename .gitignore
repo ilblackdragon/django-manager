@@ -1,0 +1,4 @@
+# Ignore all temproray, log and avatar files
+*.pyc
+*.swp
+*~

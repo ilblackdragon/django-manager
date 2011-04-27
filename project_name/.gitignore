@@ -1,0 +1,15 @@
+# Ignore all temproray, log and avatar files
+*.pyc
+local_settings.py
+*.swp
+*~
+*.mo
+.svn
+.git
+*.log
+static/avatars/*
+static/uploads/*
+deploy/var/log/*
+build/
+deploy/lock/*
+Thumbs.db
