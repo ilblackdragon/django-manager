@@ -31,9 +31,9 @@ def copy_tree(path_from, path_to, args):
         if filename == "empty_file":
             return (None, None)
         elif filename == "gitignore":
-            return (join(path_from, filename), join(path_from, '.' + filename))
+            return (join(path_from, filename), join(path_to, '.' + filename))
         return (join(path_from, filename), join(path_to, filename))
-    
+
     os.mkdir(path_to)
     files = os.listdir(path_from)
     for filename in files:
