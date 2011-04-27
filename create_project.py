@@ -27,16 +27,23 @@ def copy_tree(path_from, path_to, args):
         fout.write(handle_string(content, args, True))
         fout.close()
 
+    def get_paths(filename, path_from, path_to):
+        if filename == "empty_file":
+            return (None, None)
+        elif filename == "gitignore":
+            return (join(path_from, filename), join(path_from, '.' + filename))
+        return (join(path_from, filename), join(path_to, filename))
+    
     os.mkdir(path_to)
     files = os.listdir(path_from)
-    for f in files:
-        fpath = join(path_from, f)
-        fpath_to = join(path_to, handle_string(f, args))
+    for filename in files:
+        fpath, fpath_to = get_paths(filename, path_from, path_to)
+        if not fpath or not fpath_to:
+            continue
         if isdir(fpath):
             copy_tree(fpath, fpath_to, args)
         elif isfile(fpath):
-            if f != "empty_file":
-                copy_file(fpath, fpath_to)
+            copy_file(fpath, fpath_to)
         else:
             print("Can't copy `%s` - not yet implemented." % fpath)
 
