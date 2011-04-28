@@ -16,4 +16,4 @@ PIL
 # Django modules
 south
 django-misc
-git+git://github.com/frol/postmarkup.git
+

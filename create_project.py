@@ -68,7 +68,7 @@ def copy_tree(path_from, path_to, args):
         else:
             print("Can't copy `%s` - not yet implemented for this file type." % fpath)
 
-def create_project(project_name, project_path, enable_env=True, enable_git=True, enable_apps_install=True, arguments=" "):
+def create_project(project_name, project_path, enable_env=True, enable_git=True, enable_apps_install=True, arguments=""):
     project_to = join(project_path, project_name)
     if os.path.exists(project_to):
         print("`%s` already exists. Please choose another project name or path" % project_to)
