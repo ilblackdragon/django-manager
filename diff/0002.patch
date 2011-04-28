@@ -1,0 +1,19 @@
+diff -rupN diff/prev/deploy/requirements.txt {{ project_path }}/deploy/requirements.txt
+--- diff/prev/deploy/requirements.txt	2011-04-28 17:12:26.582267008 +0300
++++ {{ project_path }}/deploy/requirements.txt	2011-04-28 02:56:36.337096853 +0300
+@@ -16,4 +16,4 @@ PIL
+ # Django modules
+ south
+ django-misc
+-
++git+git://github.com/frol/postmarkup.git
+diff -rupN diff/prev/__init__.py {{ project_path }}/__init__.py
+--- diff/prev/__init__.py	2011-04-28 17:12:26.612267008 +0300
++++ {{ project_path }}/__init__.py	2011-04-28 17:12:26.612267008 +0300
+@@ -1,5 +1,5 @@
+ 
+ # THIS COMMENT INSERT AUTOMATICALLY BY `DJANGO-TEMPLATE`
+ # DO NOT REMOVE IT, IF YOU WANT TO USE UPDATE LATER
+-# REV 0001
++# REV 0002
+ # ARGS {{ arguments }}

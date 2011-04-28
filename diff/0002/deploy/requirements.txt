@@ -1,8 +1,0 @@
---- /mnt/storage/projects/www/django-template/project_name/deploy/requirements.txt	2011-04-28 02:56:36.337096853 +0300
-+++ /mnt/storage/projects/www/django-template/diff/0001/deploy/requirements.txt	2011-04-27 20:22:39.981550000 +0300
-@@ -16,4 +16,4 @@
- # Django modules
- south
- django-misc
--git+git://github.com/frol/postmarkup.git
-+

@@ -12,6 +12,7 @@ Functionality
 - Setup virtual enviroment
 - Setup git repositort, creates first commit with all folders and than add .gitignore to ignore local_settings, deploy/lock, deploy/var/log, temprorary files and etc.
 - Runs develop/update.sh that contains call for install all needed packages, including django, python-mysqld, south, django-misc.
+- Update your project with new feathures from template
 
 Usage
 =====
@@ -24,6 +25,10 @@ Usage
     
     ./create_project.py my_proj /some/specific/directory/
     
+- To update your project with new feathures fromn templates, use:
+    
+    ./update_project.py /path/to/your_project/
+
 
 Future development
 ==================
@@ -37,14 +42,11 @@ Future development
     - --no-env - disable virtual env
     - --no-langs - disable multilingual part
 
-- Super task is to update project from template, for exmaple:
-    
-    ./update_project my_proj - updates existing project and adds new apps\reqs\folders and stuff, without overwriting user's code
-
-  Nice idea, is to have diff patches from all template revisions to current. So when update_project is calling, it figure out project's revision and then apply patches.
+- Make update more stable (now it very fragile). Check how update work if there are a lot of changes in project, etc.
 
 - Add full support of multilingual - from apps to folders with compiled translations for default apps
     - Multilingual flatpages
     - Database translation
     - Making and compiling translations
- 
+
+- Windows support (including virtualenv, git, and updating from pip and updating from template)

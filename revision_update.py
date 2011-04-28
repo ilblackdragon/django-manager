@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+import re
 import os
-from os.path import exists, join, dirname, abspath, isdir, isfile
+from os.path import exists, join, dirname, abspath, isdir, isfile, basename
 import shutil
 import subprocess
 
@@ -9,48 +10,60 @@ from __init__ import TEMPLATE_REVISION
 
 CURRENT_DIR = dirname(abspath(__file__))
 
-FIRST_REVISION =  '0001'
 DIFF_DIR = join(CURRENT_DIR, 'diff')
+PREV_REVISION_PATH =  join(DIFF_DIR, 'prev')
 TEMPLATE_PATH = join(CURRENT_DIR, 'project_name')
 
-def initial():
-    if exists(DIFF_DIR):
-        return
-    os.mkdir(DIFF_DIR)
-    shutil.copytree(TEMPLATE_PATH, join(DIFF_DIR, FIRST_REVISION))
+def get_revision(rev):
+    s = str(rev)
+    return "0" * (len(TEMPLATE_REVISION) - len(s)) + s
 
-def get_prev_revision(rev):
-    s = str(int(rev) - 1)
-    s = '0' * (len(rev) - len(s)) +  s
-    return s
+def modify_init_files():
+    prev_init = join(PREV_REVISION_PATH, '__init__.py')
+    curr_init = join(TEMPLATE_PATH, '__init__.py')
+    shutil.move(prev_init, 'prev_init')
+    shutil.move(curr_init, 'curr_init')
+    content = open('prev_init').read()
+    f = open(prev_init, 'w')
+    f.write(content.replace('{{ revision }}', get_revision(int(TEMPLATE_REVISION) - 1)))
+    f.close()
+    content = open('curr_init').read()
+    f = open(curr_init, 'w')
+    f.write(content.replace('{{ revision }}', TEMPLATE_REVISION))
+    f.close()
 
-def setup_diff_dir(path_from, path_from2, path_to):
-    print("Match %s %s %s" % (path_from, path_from2, path_to))
-    os.mkdir(path_to)
-    files = os.listdir(path_from)
-    for filename in files:
-        fpath, fpath2, fpath_to = join(path_from, filename), join(path_from2, filename), join(path_to, filename)
-        if isdir(fpath):
-            if exists(fpath2):
-                setup_diff_dir(fpath, fpath2, fpath_to)
-            else:
-                shutil.copytree(fpath, fpath_to)
-        elif isfile(fpath):
-            if exists(fpath2):
-                os.system('diff ' + fpath + ' ' + fpath2 + ' -u > ' + fpath_to)
-            else:
-                shutil.copy(fpath, fpath_to)
-
-def setup_diff():
+def return_init_files():
+    shutil.move('prev_init', prev_init)
+    shutil.move('curr_init', curr_init)
+    
+def main():
+    if not exists(PREV_REVISION_PATH):
+        if not exists(DIFF_DIR):
+            os.mkdir(DIFF_DIR)
+        shutil.copytree(TEMPLATE_PATH, PREV_REVISION_PATH)
     if exists(join(DIFF_DIR, TEMPLATE_REVISION)):
         print("Your revision doesn't changed")
         return
-    PREV_REVISION = get_prev_revision(TEMPLATE_REVISION)
-    setup_diff_dir(TEMPLATE_PATH, join(DIFF_DIR, PREV_REVISION), join(DIFF_DIR, TEMPLATE_REVISION))
 
-def main():
-    initial()
-    setup_diff()
+    # Get patch
+    modify_init_files()
+    res_file = join(DIFF_DIR, TEMPLATE_REVISION) + '.patch'
+    temp_file = res_file + '.tmp'
+    os.system('diff -rupN ' + PREV_REVISION_PATH + ' ' + TEMPLATE_PATH + ' > ' + temp_file)
+    return_init_files()
+    
+    # Update patch
+    content = open(temp_file).read()
+    content = content.replace(TEMPLATE_PATH, '{{ project_path }}')
+    content = content.replace(DIFF_DIR, basename(DIFF_DIR))
+    fout = open(res_file, 'wb')
+    fout.write(content)
+    fout.close()
+    os.remove(temp_file)
+
+    # Update previsous version to current
+    shutil.rmtree(PREV_REVISION_PATH)
+    shutil.copytree(TEMPLATE_PATH, PREV_REVISION_PATH)
 
 if __name__ == "__main__":
     main()
