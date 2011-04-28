@@ -2,8 +2,24 @@
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
+        <title>{% block head_title %}{% endblock %}</title>
         <link rel="stylesheet" href="{{ STATIC_MEDIA }}css/base.css">
+        {% block extra_css %}{% endblock %}
+        {% block extra_head %}{% endblock %}
     </head>
     <body>
+        <div id="header">
+        </div>
+        <div id="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+        <div id="footer">
+        </div>
+        <script src="{{ STATIC_URL }}js/jquery/jquery-1.4.4.min.js"></script>
+        {% block extra_js %}{% endblock %}
+        <script>
+            {% block inline_js %}{% endblock %}
+        </script>
     </body>
 </html>

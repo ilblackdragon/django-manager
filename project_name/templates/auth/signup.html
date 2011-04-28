@@ -1,0 +1,28 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block body %}
+    <h1>{% trans "Sign Up" %}</h1>
+    
+    {% if user.is_authenticated %}
+        <p>{% trans "You are already logged in." %}</p>
+    {% else %}
+        <p>{% trans "Already have an account?" %} <a href="{% url auth_login %}">{% trans "Log In" %}</a>!</p>
+        
+        <form class="signup uniForm" id="signup_form" method="post" action="{% url auth_signup %}">
+            {% csrf_token %}
+            <fieldset class="inlineLabels">
+                {{ form|as_uni_form }}
+            </fieldset>
+            <div  class="form_blick">
+                <input type="submit" value="{% trans "Sign Up &raquo;" %}" />
+                {% blocktrans %}By clicking "Sign Up", you are indicating that you have read and agree to the <a href="/terms/">Terms of Use</a> and <a href="/privacy/">Privacy Policy</a>.{% endblocktrans %}
+            </div>
+        </form>
+        <hr><br>
+    {% endif %}
+{% endblock %}

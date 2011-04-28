@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from os.path import join, exists
+from os.path import join, exists, abspath
 import sys
 import re
 
@@ -38,11 +38,12 @@ def patch_revision(project_path, rev):
     fout.close()
     curr_dir = os.getcwd()
     os.chdir(project_path)
-    os.system('patch -p2 < ' + filename_out)
+    os.system('patch -p0 < ' + filename_out)
     os.chdir(curr_dir)
     os.remove(filename_out)
 
 def update_project(project_path):
+    project_path = abspath(project_path)
     if exists(join(project_path, 'project')):
         project_path = join(project_path, 'project')
     rev, args = get_parameters(join(project_path, '__init__.py'))

@@ -1,0 +1,32 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Login" %}{% endblock %}
+
+{% block inline_js %}
+    $("#id_username").focus();
+{% endblock %}
+
+{% block body %}    
+    <h1>{% trans "Log In" %}</h1>
+    
+    {% if user.is_authenticated %}
+        <p><span class="warning">{% trans "Note" %}</span>: {% blocktrans %}you are already logged in as {{ user }}.{% endblocktrans %}</p>
+    {% else %}
+        {% url auth_signup as signup_url %}
+        <p>{% blocktrans %}Don't have an account? <a href="{{ signup_url }}">Sign up</a>!{% endblocktrans %}</p>
+    {% endif %}
+    
+    <form class="login uniForm" method="POST" action="">
+        {% csrf_token %}
+        <fieldset class="inlineLabels">
+            {{ form.as_p }}
+            <div class="form_block">
+                <input type="submit" value="{% trans "Log in &raquo;" %}" />
+                <a href="{% url auth_password_reset %}">{% trans "Forgot password?" %}</a>
+            </div>
+        </fieldset>
+    </form>
+    <hr>
+{% endblock %}

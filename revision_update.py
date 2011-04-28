@@ -33,6 +33,8 @@ def modify_init_files():
     f.close()
 
 def return_init_files():
+    prev_init = join(PREV_REVISION_PATH, '__init__.py')
+    curr_init = join(TEMPLATE_PATH, '__init__.py')
     shutil.move('prev_init', prev_init)
     shutil.move('curr_init', curr_init)
     
@@ -51,7 +53,7 @@ def main():
     temp_file = res_file + '.tmp'
     os.system('diff -rupN ' + PREV_REVISION_PATH + ' ' + TEMPLATE_PATH + ' > ' + temp_file)
     return_init_files()
-    
+        
     # Update patch
     content = open(temp_file).read()
     content = content.replace(TEMPLATE_PATH, '{{ project_path }}')
@@ -62,8 +64,8 @@ def main():
     os.remove(temp_file)
 
     # Update previsous version to current
-    shutil.rmtree(PREV_REVISION_PATH)
-    shutil.copytree(TEMPLATE_PATH, PREV_REVISION_PATH)
+#    shutil.rmtree(PREV_REVISION_PATH)
+#    shutil.copytree(TEMPLATE_PATH, PREV_REVISION_PATH)
 
 if __name__ == "__main__":
     main()

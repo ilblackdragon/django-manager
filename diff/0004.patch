@@ -1,0 +1,29 @@
+diff -rupN diff/prev/deploy/requirements.txt {{ project_path }}/deploy/requirements.txt
+--- diff/prev/deploy/requirements.txt	2011-04-28 18:34:38.352268713 +0300
++++ {{ project_path }}/deploy/requirements.txt	2011-04-28 17:50:15.992267792 +0300
+@@ -17,3 +17,4 @@ PIL
+ south
+ django-misc
+ git+git://github.com/frol/postmarkup.git
++django-uni-form
+diff -rupN diff/prev/__init__.py {{ project_path }}/__init__.py
+--- diff/prev/__init__.py	2011-04-28 18:41:17.302268851 +0300
++++ {{ project_path }}/__init__.py	2011-04-28 18:41:17.302268851 +0300
+@@ -1,5 +1,5 @@
+ 
+ # THIS COMMENT INSERT AUTOMATICALLY BY `DJANGO-TEMPLATE`
+ # DO NOT REMOVE IT, IF YOU WANT TO USE UPDATE LATER
+-# REV 0003
++# REV 0004
+ # ARGS {{ arguments }}
+diff -rupN diff/prev/urls.py {{ project_path }}/urls.py
+--- diff/prev/urls.py	2011-04-28 18:34:31.542268711 +0300
++++ {{ project_path }}/urls.py	2011-04-28 17:49:42.062267780 +0300
+@@ -10,6 +10,7 @@ urlpatterns = patterns('',
+     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+     (r'^admin/', include(admin.site.urls)),
+ 
++    (r'^auth/', include('auth_ext.urls'))
+     # Include your urls here
+ )
+ 
