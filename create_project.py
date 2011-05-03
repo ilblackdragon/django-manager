@@ -13,7 +13,10 @@ from __init__ import TEMPLATE_REVISION
 PROJECT_TEMPLATE_PATH = join(dirname(abspath(__file__)), 'project_name')
 ENV_DIR = 'env'
 ENV_PROJECT_DIR = 'project'
-UPDATE_SCRIPT = './develop/update.sh'
+UPDATE_SCRIPT = {
+    'posix': './develop/update.sh', 
+    'nt': 'develop\update.bat'
+}
 GITIGNORE_PATH = join(dirname(abspath(__file__)), 'template_gitignore')
 
 def secret_key():
@@ -37,7 +40,7 @@ def setup_git(path_to):
 def apps_install(path_to):
     cur_dir = os.getcwd()
     os.chdir(path_to)
-    subprocess.call([UPDATE_SCRIPT])
+    subprocess.call([UPDATE_SCRIPT.get(os.name, 'posix')])
     os.chdir(cur_dir)
 
 def copy_tree(path_from, path_to, args):
@@ -96,9 +99,13 @@ def create_project(project_name, project_path, enable_env=True, enable_git=True,
         if enable_apps_install:
             apps_install(project_to)
     except Exception as e:
-        if os.path.exists(project_to):
-            shutil.rmtree(project_to)
-        raise e, None, sys.exc_info()[2]
+        traceback = sys.exc_info()[2]
+        try:
+            if os.path.exists(project_to):
+                shutil.rmtree(project_to)
+        except:
+            print("Exception occured on removing `%s`" % project_to)
+        raise e, None, traceback
 
 if __name__ == "__main__":
     # TODO: Add arg parse for additional configuration
