@@ -64,8 +64,8 @@ def main():
     os.remove(temp_file)
 
     # Update previsous version to current
-#    shutil.rmtree(PREV_REVISION_PATH)
-#    shutil.copytree(TEMPLATE_PATH, PREV_REVISION_PATH)
+    shutil.rmtree(PREV_REVISION_PATH)
+    shutil.copytree(TEMPLATE_PATH, PREV_REVISION_PATH)
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,15 @@
+diff -rupN diff\prev/__init__.py {{ project_path }}/__init__.py
+--- diff\prev/__init__.py	Tue May  3 14:23:38 2011
++++ {{ project_path }}/__init__.py	Tue May  3 14:23:38 2011
+@@ -1,5 +1,5 @@
+ 
+ # THIS COMMENT INSERT AUTOMATICALLY BY `DJANGO-TEMPLATE`
+ # DO NOT REMOVE IT, IF YOU WANT TO USE UPDATE LATER
+-# REV 0004
++# REV 0005
+ # ARGS {{ arguments }}
+diff -rupN diff\prev/develop/update.bat {{ project_path }}/develop/update.bat
+--- diff\prev/develop/update.bat	Thu Jan  1 02:00:00 1970
++++ {{ project_path }}/develop/update.bat	Tue May  3 14:02:11 2011
+@@ -0,0 +1 @@
++cmd.exe /K "..\env\Scripts\activate.bat && pip install -r deploy/requirements.txt"

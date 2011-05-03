@@ -47,7 +47,7 @@ def update_project(project_path):
     if exists(join(project_path, 'project')):
         project_path = join(project_path, 'project')
     rev, args = get_parameters(join(project_path, '__init__.py'))
-    if not rev or not args:
+    if not rev or args is None:
         print("It not seems that project created by `Django-template` application.")
         return
     templ_rev = int(TEMPLATE_REVISION)
