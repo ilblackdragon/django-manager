@@ -13,6 +13,7 @@ Functionality
 - Setup git repositort, creates first commit with all folders and than add .gitignore to ignore local_settings, deploy/lock, deploy/var/log, temprorary files and etc.
 - Runs develop/update.sh that contains call for install all needed packages, including django, python-mysqld, south, django-misc.
 - Update your project with new feathures from template
+- Works on windows (if virtualenv and git (with all utils) installed)
 
 Usage
 =====
@@ -49,4 +50,3 @@ Future development
     - Database translation
     - Making and compiling translations
 
-- Windows support (including virtualenv, git, and updating from pip and updating from template)
